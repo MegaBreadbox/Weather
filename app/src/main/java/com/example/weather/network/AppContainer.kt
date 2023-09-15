@@ -13,4 +13,8 @@ class DefaultAppContainer {
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(BASE_URL)
         .build()
+
+    val retrofitService: WeatherApiService by lazy {
+        retrofit.create(WeatherApiService::class.java)
+    }
 }
