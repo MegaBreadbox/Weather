@@ -10,26 +10,28 @@ import com.example.weather.network.DefaultAppContainer
 import kotlinx.coroutines.launch
 
 sealed interface WeatherUiState {
-    data class Success(val weather: String): WeatherUiState
+    data class Success(val weather: Weather): WeatherUiState
     object Error : WeatherUiState
     object Loading : WeatherUiState
 }
 
 class WeatherViewModel : ViewModel() {
-    var weatherUiState by mutableStateOf(WeatherUiState.Success(""))
+    var weatherUiState: WeatherUiState by mutableStateOf(WeatherUiState.Loading)
         private set
 
     init{
         getWeather()
     }
 
+    fun getWeatherDetails(){
+    }
+
     private fun getWeather() {
         viewModelScope.launch {
             val weather = DefaultAppContainer().retrofitService.getWeather()
             weatherUiState = WeatherUiState.Success(
-                "here's the weather $weather"
+                weather
             )
-
         }
     }
 }

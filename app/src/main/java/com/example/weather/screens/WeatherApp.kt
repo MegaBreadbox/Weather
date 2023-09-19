@@ -8,9 +8,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun WeatherApp(
     weatherModel: WeatherViewModel = viewModel()
 ){
-    Text(
-        text = weatherModel.weatherUiState.weather
-    )
+
+    when(val weatherState = weatherModel.weatherUiState) {
+        is WeatherUiState.Loading -> Text(text = "loading")
+        is WeatherUiState.Success -> Text(text = weatherState.weather.currentWeather.temperature.toString())
+        is WeatherUiState.Error -> Text(text = "Error")
+
+    }
 }
 
 @Composable
