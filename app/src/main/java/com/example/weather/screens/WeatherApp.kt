@@ -9,7 +9,7 @@ fun WeatherApp(
     weatherModel: WeatherViewModel = viewModel()
 ){
     Text(
-        text = weatherModel.weatherUiState
+        text = weatherModel.weatherUiState.weather
     )
 }
 
