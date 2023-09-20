@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -65,9 +66,9 @@ fun CurrentWeatherCard(weather: Weather,modifier: Modifier = Modifier){
             weatherEntry(entryValue = "${weather.currentWeather.temperature} °C")
             weatherEntry(entryValue = "${weather.currentWeather.windspeed} Km/h wind speed")
         }
-        HourlyForecastCard(
-            time = weather.hourly.time[0].drop(11),
-            temperature = weather.hourly.temperature2m[0],
+        HourlyForecastList(
+            time = weather.hourly.time,
+            temperature = weather.hourly.temperature2m,
             modifier = Modifier.padding(16.dp)
         )
     }
@@ -82,9 +83,15 @@ fun weatherEntry(entryValue: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HourlyForecastList(modifier: Modifier = Modifier){
+fun HourlyForecastList(time: Array<String>, temperature: Array<Float>,modifier: Modifier = Modifier){
     LazyRow(){
-
+        items(count = 25) {
+            HourlyForecastCard(
+                time = time[it].drop(11),
+                temperature = temperature[it],
+                modifier = Modifier.padding(8.dp)
+            )
+        }
     }
 }
 
@@ -92,7 +99,7 @@ fun HourlyForecastList(modifier: Modifier = Modifier){
 fun HourlyForecastCard(time: String, temperature: Float, modifier: Modifier = Modifier){
     Card(
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
-        modifier = modifier.size(150.dp)
+        modifier = modifier.size(120.dp)
     ) {
         Text(
             text = time,
