@@ -1,11 +1,13 @@
 package com.example.weather.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +39,7 @@ fun WeatherApp(
                     .fillMaxWidth()
 
             )
+
         is WeatherUiState.Error -> Text(text = "Error")
 
     }
@@ -44,22 +47,29 @@ fun WeatherApp(
 
 @Composable
 fun CurrentWeatherCard(weather: Weather,modifier: Modifier = Modifier){
-    Card(
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
-        modifier = modifier
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Current weather in ${weather.timezone} \n${weather.timezoneAbbreviation}",
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(8.dp)
+
+    Column {
+        Card(
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
+            modifier = modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Current weather in ${weather.timezone} \n${weather.timezoneAbbreviation}",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(8.dp)
+            )
+            //Spacer(Modifier.padding(8.dp))
+            weatherEntry(entryValue = "${weather.currentWeather.temperature} °C")
+            weatherEntry(entryValue = "${weather.currentWeather.windspeed} Km/h wind speed")
+        }
+        HourlyForecastCard(
+            time = weather.hourly.time[0].drop(11),
+            temperature = weather.hourly.temperature2m[0],
+            modifier = Modifier.padding(16.dp)
         )
-        //Spacer(Modifier.padding(8.dp))
-        weatherEntry(entryValue = "${weather.currentWeather.temperature} °C")
-        weatherEntry(entryValue = "${weather.currentWeather.windspeed} Km/h wind speed")
-        HourlyForecastCard()
     }
 }
 
@@ -73,15 +83,25 @@ fun weatherEntry(entryValue: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun HourlyForecastList(modifier: Modifier = Modifier){
+    LazyRow(){
 
+    }
 }
 
 @Composable
-fun HourlyForecastCard(time: String, temperature: String, modifier: Modifier = Modifier){
+fun HourlyForecastCard(time: String, temperature: Float, modifier: Modifier = Modifier){
     Card(
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
-
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
+        modifier = modifier.size(150.dp)
     ) {
+        Text(
+            text = time,
+            modifier.align(CenterHorizontally)
 
+        )
+        Text(
+            text = "$temperature °C",
+            modifier.align(CenterHorizontally)
+        )
     }
 }
